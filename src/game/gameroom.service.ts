@@ -31,7 +31,7 @@ export class GameroomService {
     const token = data?.data?.token;
 
     if (token) {
-      await this.redis.set(cacheKey, token, 'EX', 300);
+      await this.redis.set(cacheKey, token, 'EX', 60);
     }
 
     return token;
