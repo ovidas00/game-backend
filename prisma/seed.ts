@@ -8,7 +8,7 @@ async function main() {
       name: 'Gameroom',
       category: 'Slots',
       slug: 'gameroom',
-      image: '/game-room.png',
+      image: '/gameroom.png',
       badge: 'New',
       isFeatured: true,
     },
