@@ -55,10 +55,7 @@ export class GameroomService {
 
     return {
       data: data?.data ?? [],
-      page: Number(page),
-      limit: Number(limit),
-      total,
-      totalPages,
+      meta: { page: Number(page), limit: Number(limit), total, totalPages },
     };
   }
 
