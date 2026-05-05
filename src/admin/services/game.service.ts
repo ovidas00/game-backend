@@ -1,12 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { GameroomService } from 'src/game/gameroom.service';
 import { MafiaService } from 'src/game/mafia.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class GameService {
   private serviceMap: Record<string, any>;
 
   constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
     private readonly gameroomService: GameroomService,
     private readonly mafiaService: MafiaService,
   ) {
@@ -14,6 +18,17 @@ export class GameService {
       gameroom: this.gameroomService,
       mafia: this.mafiaService,
     };
+  }
+
+  async getAllGames() {
+    const games = await this.prisma.game.findMany();
+
+    return games.map((game) => ({
+      ...game,
+      image: game.image
+        ? `${this.configService.get<string>('BACKEND_URL')}${game.image}`
+        : null,
+    }));
   }
 
   async getPlayerList(slug: string, query: { limit: number; page: number }) {

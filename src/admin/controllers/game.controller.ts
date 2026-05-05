@@ -5,6 +5,11 @@ import { GameService } from '../services/game.service';
 export class GameController {
   constructor(private readonly gameService: GameService) {}
 
+  @Get()
+  getAllGames() {
+    return this.gameService.getAllGames();
+  }
+
   @Get(':slug/players')
   getPlayerList(
     @Param('slug') slug: string,
