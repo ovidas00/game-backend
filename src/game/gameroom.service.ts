@@ -73,20 +73,27 @@ export class GameroomService {
     };
   }
 
-  async addPlayer() {
+  async addPlayer(
+    username?: string,
+    nickname?: string,
+    password?: string,
+    money: number = 0,
+  ) {
     const token = await this.getAgentToken();
 
-    // letters, numbers only
-    const username = randomBytes(6).toString('hex').slice(0, 10);
-    const nickname = username;
+    // fallback if not provided
+    const finalUsername =
+      username || randomBytes(6).toString('hex').slice(0, 10);
 
-    const password = randomBytes(6).toString('hex');
+    const finalNickname = nickname || finalUsername;
+
+    const finalPassword = password || randomBytes(6).toString('hex');
 
     const formData = new URLSearchParams();
-    formData.append('username', username);
-    formData.append('nickname', nickname);
-    formData.append('password', password);
-    formData.append('money', '0');
+    formData.append('username', finalUsername);
+    formData.append('nickname', finalNickname);
+    formData.append('password', finalPassword);
+    formData.append('money', money.toString());
 
     const { data } = await this.http.axiosRef.post(
       `${this.baseUrl}/player/insertPlayer`,
@@ -99,12 +106,11 @@ export class GameroomService {
     );
 
     return {
-      username,
-      password,
+      username: finalUsername,
+      password: finalPassword,
       apiResponse: data,
     };
   }
-
   async getPlayerScore(id: string): Promise<number> {
     const token = await this.getAgentToken();
 

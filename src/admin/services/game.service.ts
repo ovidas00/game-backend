@@ -55,4 +55,20 @@ export class GameService {
       nickname,
     });
   }
+
+  async addPlayer(
+    slug: string,
+    username?: string,
+    nickname?: string,
+    password?: string,
+    money: number = 0,
+  ) {
+    const service = this.serviceMap[slug];
+
+    if (!service) {
+      throw new BadRequestException(`Unknown game slug: ${slug}`);
+    }
+
+    return await service.addPlayer(username, nickname, password, money);
+  }
 }
