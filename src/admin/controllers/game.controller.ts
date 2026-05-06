@@ -13,7 +13,14 @@ export class GameController {
   @Get(':slug/players')
   getPlayerList(
     @Param('slug') slug: string,
-    @Query() query: { limit: number; page: number },
+    @Query()
+    query: {
+      limit?: number;
+      page?: number;
+      id?: string;
+      account?: string;
+      nickname?: string;
+    },
   ) {
     return this.gameService.getPlayerList(slug, query);
   }

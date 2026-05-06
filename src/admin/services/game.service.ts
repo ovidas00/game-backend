@@ -31,14 +31,28 @@ export class GameService {
     }));
   }
 
-  async getPlayerList(slug: string, query: { limit: number; page: number }) {
+  async getPlayerList(
+    slug: string,
+    query: {
+      limit?: number;
+      page?: number;
+      id?: string;
+      account?: string;
+      nickname?: string;
+    },
+  ) {
     const service = this.serviceMap[slug];
-    const { limit, page } = query;
 
     if (!service) {
       throw new BadRequestException(`Unknown game slug: ${slug}`);
     }
 
-    return service.getPlayerList(limit, page);
+    const { limit = 10, page = 1, id, account, nickname } = query;
+
+    return await service.getPlayerList(limit, page, {
+      id,
+      account,
+      nickname,
+    });
   }
 }

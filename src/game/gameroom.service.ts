@@ -37,13 +37,27 @@ export class GameroomService {
     return token;
   }
 
-  async getPlayerList(limit = 10, page = 1) {
+  async getPlayerList(
+    limit = 10,
+    page = 1,
+    filters?: { id?: string; account?: string; nickname?: string },
+  ) {
     const token = await this.getAgentToken();
+
+    // Build params dynamically
+    const params: Record<string, any> = {
+      limit,
+      page,
+    };
+
+    if (filters?.id) params.Id = filters.id;
+    if (filters?.account) params.account = filters.account;
+    if (filters?.nickname) params.nickname = filters.nickname;
 
     const { data } = await this.http.axiosRef.get(
       `${this.baseUrl}/player/playerList`,
       {
-        params: { limit, page },
+        params,
         headers: {
           Authorization: `Bearer ${token}`,
         },
