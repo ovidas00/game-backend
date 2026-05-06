@@ -31,7 +31,7 @@ export class MafiaService {
     const token = data?.data?.token;
 
     if (token) {
-      await this.redis.set(cacheKey, token, 'EX', 60);
+      await this.redis.set(cacheKey, token, 'EX', 18000);
     }
 
     return token;
